@@ -150,7 +150,15 @@ notunnelright
 	ld (paclast),hl
 	xor a
 	ld (pacgfx),a
+	
+;check for demo
+	ld a,(demo)
+	cp 1
+	jp z,demomove
+	
 	ret
+	
+	
 	
 norghtwall
 	ld a,(pacgfx)
@@ -213,7 +221,7 @@ notunnelleft
 ;now, check if it's a wall
 	bit PAC_WALL,(hl)
 	jr z,noleftwall
-	;hit a wall going left
+;hit a wall going left
 ;set pacman to no movement
 	ld a,PAC_STILL
 	ld (pacdir),a
@@ -221,6 +229,10 @@ notunnelleft
 	ld (paclast),hl
 	xor a
 	ld (pacgfx),a
+;check for demo
+	ld a,(demo)
+	cp 1
+	jp z,demomove
 	ret	
 	
 noleftwall
@@ -276,6 +288,11 @@ notpleft
 	ld hl,pacd1
 	ld (paclast),hl
 	
+;check for demo
+	ld a,(demo)
+	cp 1
+	jp z,demomove
+	
 nodownwall
 	ret
 notpdown
@@ -308,6 +325,11 @@ gpup
 	ld (pacdir),a
 	ld hl,pacl4
 	ld (paclast),hl	
+;check for demo
+	ld a,(demo)
+	cp 1
+	jp z,demomove
+		
 
 odd1
 	ld a,(pacgfx)

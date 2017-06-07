@@ -37,13 +37,20 @@
 
 ;instructions
 restart
+	ld a,(demo)
+	cp $1
+	jr nz,nooutdemo
+	ld hl,(sscore)
+	ld (score),hl
+	
+nooutdemo
+	call demoinit
 	call instruct	
 ;switch to hires	
 	call hires
-
 ;set everything up
 	call init1up
-	
+
 screenreset
 	call resetpills
 	call redrawmaze
@@ -215,6 +222,10 @@ endall
 ;exit the main loop - switch back to low res	
 	call lores
 ;see if we've got a new hiscore	
+;first check we've not just come out of demo mode
+	ld a,(demo)
+	cp 1
+	jr z,notnewhs
 	ld hl,(hiscore)
 	ld bc,(score)
 ;compare the MSB of the score
@@ -239,6 +250,7 @@ notnewhs
 
 ;routines for moving pacman
 #include "pacmove.asm"
+#include "demomove.asm"
 #include "pacmaze.asm"
 #include "pacdeath.asm"
 
@@ -332,25 +344,40 @@ dellp1
 ;show some rubbish instructions	
 instruct
 
-
-
-	ld bc,(DISPLEN*8)+20
+	ld bc,(DISPLEN*8)+24
 	ld de,hiscore
 	call dispBCD
 	
-	ld bc,(DISPLEN*9)+20
+	ld bc,(DISPLEN*9)+24
 	ld de,score
 	call dispBCD
 	
 	
 waitkpress
+	ld hl,(democnt)
+	dec hl
+	ld (democnt),hl
+	xor a
+	cp h
+	jr nz,coni
+	cp l
+	jr z,fininst
+	
+coni	
 	call KSCAN
 	
  	bit 3,l
 	jr nz,waitkpress
 	bit 1,h
 	jr nz,waitkpress
-
+	ret
+	
+fininst	
+	ld hl,(score)
+	ld (sscore),hl
+	ld a,1
+	ld (demo),a
+	ld (lives),a
 	
 	ret
 ;include our variables

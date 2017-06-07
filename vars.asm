@@ -1,7 +1,14 @@
 ;our variables
 lives	DEFB	$00
 score	DEFW	$0000
+sscore	DEFW	$0000
 hiscore DEFW	$0000
+
+;demo
+demo	DEFB	$00
+democnt	DEFW	$0000
+demopos	DEFB	$00
+
 
 pilleat	DEFB	$00
 

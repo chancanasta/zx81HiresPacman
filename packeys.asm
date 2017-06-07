@@ -1,4 +1,5 @@
 ;
+;
 ; packeys.asm
 ;
 ; key based routines
@@ -6,15 +7,23 @@
 ;read keys
 readkeys
 ;a bit lazy - call the ROM routine to get the zone values into HL
-	call KSCAN
-;test for zones...
-;exit on q
-; 	bit 2,l
-;	jr nz,noexkey
-;	ld a,QUIT_GAME
-;	ld (exitlp),a
-;	jp retreadkeys
+	call KSCAN	
+;check for demo flag	
+	ld a,(demo)
+	or a
+	jr z,nodemo
+;in demo, exit on any key
+	ld a,$ff
+ 	cp l
+	jr z,noexkey
+	ld a,QUIT_GAME
+	ld (exitlp),a
+	jp retreadkeys
 noexkey	
+	
+	jp retreadkeys
+nodemo	
+;test for zones...
 ;check for left
 	bit 3,l	
 	jr nz,noleft
@@ -106,7 +115,6 @@ okdown
 	ld (pacgfx),a
 	jp retreadkeys
 noup
-	
 
 ;right
 	bit 3,h

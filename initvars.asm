@@ -1,13 +1,29 @@
 ;initialise the variables
 
+demoinit
+;demo mode counter	
+	ld hl,DEMO_WAIT
+	ld (democnt),hl
+	xor a
+;demo state and idx for keys	
+	ld (demo),a
+	ld (demopos),a
+	ret
+	
 ;reset scores and lives
 init1up
 ;these are all reset once at the start of the game
 ;set score to zero
 	ld hl,0
 	ld (score),hl
-;lives to 3	
+	
+	
+;number of lives
+	ld a,(demo)
+	cp 1
+	jr z,demolive
 	ld a,3
+demolive	
 	ld (lives),a
 
 	ret
