@@ -1,0 +1,11 @@
+# assembled source #
+####################
+*.p
+
+# symbol files #
+################
+*.sym
+
+# list files #
+##############
+*.lst
