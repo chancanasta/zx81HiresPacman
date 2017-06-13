@@ -368,7 +368,7 @@ coni
 	
  	bit 3,l
 	jr nz,waitkpress
-	bit 1,h
+bit 1,h
 	jr nz,waitkpress
 	ret
 	

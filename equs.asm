@@ -3,10 +3,8 @@ DISPLEN			EQU $21
 BLANK_BITS		EQU	$0A
 FULL_BITS		EQU $A2
 HIRES_IDX		EQU	14
-
 ;delay before demo starts
 DEMO_WAIT		EQU 10000
-
 FPS				EQU 50
 
 ;pac direction
