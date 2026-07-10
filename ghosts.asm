@@ -177,6 +177,8 @@ notscared
 	jr z,nosettarg1
 	cp SCARED_MODE
 	jr z,nosettarg1
+	cp CAGE_MODE
+	jr z,nosettarg1
 	ld bc,$4000
 	ld (gh1tarx),bc
 	ld a,SCATTER_MODE
@@ -186,6 +188,8 @@ nosettarg1
 	cp EYES_MODE
 	jr z,nosettarg102
 	cp SCARED_MODE
+	jr z,nosettarg102
+	cp CAGE_MODE
 	jr z,nosettarg102
 	ld bc,$0000
 	ld (gh2tarx),bc
@@ -197,6 +201,8 @@ nosettarg102
 	jr z,nosettarg103
 	cp SCARED_MODE
 	jr z,nosettarg103
+	cp CAGE_MODE
+	jr z,nosettarg103
 	ld bc,$4040
 	ld (gh3tarx),bc
 	ld a,SCATTER_MODE
@@ -206,6 +212,8 @@ nosettarg103
 	cp EYES_MODE
 	jr z,nosettarg104
 	cp SCARED_MODE
+	jr z,nosettarg104
+	cp CAGE_MODE
 	jr z,nosettarg104
 	ld bc,$0040
 	ld (gh4tarx),bc
@@ -227,6 +235,8 @@ notscatter
 	jr z,notchase0
 	cp SCARED_MODE
 	jr z,notchase0
+	cp CAGE_MODE
+	jr z,notchase0
 	ld a,b
 	ld (gh1mode),a
 notchase0
@@ -234,6 +244,8 @@ notchase0
 	cp EYES_MODE
 	jr z,notchase
 	cp SCARED_MODE
+	jr z,notchase
+	cp CAGE_MODE
 	jr z,notchase
 	ld a,b
 	ld (gh2mode),a
@@ -403,7 +415,20 @@ psavegback
 	ld bc,$0e20
 ;	ld bc,$0c20
 	ld a,(ghgmode)
-
+	cp CAGE_MODE
+	jr nz,pdrawmode
+;still caged - if a scare is currently active, flash like every other
+;scared ghost. ghgmode itself is left as CAGE_MODE (only the value used
+;below for sprite selection changes), so the bounce/release logic in
+;ghostmove.asm is completely unaffected
+	ld a,(ghmode)
+	cp SCARED_MODE
+	jr nz,pnotscaredcage
+	ld a,SCARED_MODE
+	jr pdrawmode
+pnotscaredcage
+	ld a,CAGE_MODE
+pdrawmode
 	cp SCARED_MODE
 	jr nz,db1
 	

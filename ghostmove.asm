@@ -966,7 +966,10 @@ ghostdown
 	ld a,(hl)
 	or a
 	jr nz,noendgcnt
-	ld a,SCATTER_MODE
+;released from the cage - adopt whatever mode the game is currently in
+;(scared/chase/scatter), rather than assuming scatter, so a ghost that
+;comes out during a power-pill's scared window is scared like the rest
+	ld a,(ghmode)
 	ld (ghgmode),a
 noendgcnt
 
